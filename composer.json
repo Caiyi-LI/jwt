@@ -1,5 +1,5 @@
 {
-    "name": "Caiyi-LI/jwt",
+    "name": "caiyi-li/jwt",
     "description": "restful api",
     "require": {
         "php": "^5.6"
