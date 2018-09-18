@@ -1,18 +1,13 @@
 {
-    "name": "caiyi-li/jwt",
-    "description": "restful api",
-    "require": {
-        "php": ">=5.6"
-    },
-    "require-dev":{
-        "php": ">=5.6"
-    },
+    "name": "yyc/jwt",
+    "description": "jwt",
     "license": "MIT",
     "authors": [
         {
-            "name": "caiyili",
-            "email": "849845711@qq.com"
+            "name": "yiliC",
+            "email": "3444531053@qq.com"
         }
     ],
-    "minimum-stability": "dev"
+    "minimum-stability": "0.0.0.1",
+    "require": {}
 }
