@@ -8,6 +8,6 @@
             "email": "3444531053@qq.com"
         }
     ],
-    "minimum-stability": "0.0.0.1",
+    "minimum-stability": "stable",
     "require": {}
 }
