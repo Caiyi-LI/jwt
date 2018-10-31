@@ -19,8 +19,6 @@ class RestfulApiAuth{
 
     public function handle(){
         $this->converHeader();
-        var_dump($this->headers);
-        die();
     }
 
     private function converHeader(){
