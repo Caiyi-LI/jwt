@@ -1,6 +1,5 @@
 <?php
 namespace yyc;
-use yyc\Exception\RestfulApiException;
 class RestfulApiAuth{
 
     protected $origin = '';
@@ -22,14 +21,12 @@ class RestfulApiAuth{
     }
 
     private function converHeader(){
-                      // 指定允许其他域名访问
-        header('Access-Control-Allow-Origin:http://dev.blog.com');
-        // 响应类型
-        header('Access-Control-Allow-Methods:POST,GET');
-        // 响应头设置
-        header('Access-Control-Allow-Headers:x-requested-with,content-type');
-
-        throw new RestfulApiException('配置不能为空', 'ERROR_CONFIG_EMPTY');
+//                      // 指定允许其他域名访问
+//        header('Access-Control-Allow-Origin:http://dev.blog.com');
+//        // 响应类型
+//        header('Access-Control-Allow-Methods:POST,GET');
+//        // 响应头设置
+//        header('Access-Control-Allow-Headers:x-requested-with,content-type');
         foreach($_SERVER as $serverKey => $item){
             if(in_array($serverKey, $this->isAllowHeaders)){
                 $this->headers[strtolower(str_replace('_', '-', $this->trimSpace($serverKey)))] = $_SERVER[$serverKey];
@@ -38,6 +35,11 @@ class RestfulApiAuth{
                 $this->headers[strtolower(str_replace('_', '-', $this->trimSpace($serverKey)))] = $item;
             }
         }
+        if(strtoupper($this->headers['request-method']) === 'OPTION'){
+            var_dump('签名');die();
+        }
+        var_dump('后续');
+        die();
     }
 
     private function trimSpace($key){
