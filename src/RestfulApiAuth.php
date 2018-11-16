@@ -21,12 +21,13 @@ class RestfulApiAuth{
     }
 
     private function converHeader(){
-//                      // 指定允许其他域名访问
-//        header('Access-Control-Allow-Origin:http://dev.blog.com');
-//        // 响应类型
-//        header('Access-Control-Allow-Methods:POST,GET');
-//        // 响应头设置
-//        header('Access-Control-Allow-Headers:x-requested-with,content-type');
+                     // 指定允许其他域名访问
+       header('Access-Control-Allow-Origin:*');
+       // 响应类型
+       header('Access-Control-Allow-Methods:OPTIONS');
+       // 响应头设置
+       header('Access-Control-Allow-Headers:x-requested-with,content-type');
+       header('Access-Control-Allow-Headers:authorization');
         foreach($_SERVER as $serverKey => $item){
             if(in_array($serverKey, $this->isAllowHeaders)){
                 $this->headers[strtolower(str_replace('_', '-', $this->trimSpace($serverKey)))] = $_SERVER[$serverKey];
@@ -35,8 +36,13 @@ class RestfulApiAuth{
                 $this->headers[strtolower(str_replace('_', '-', $this->trimSpace($serverKey)))] = $item;
             }
         }
-        if(strtoupper($this->headers['request-method']) === 'OPTION'){
-            var_dump('签名');die();
+        if(strtoupper($this->headers['request-method']) == 'OPTIONS'){
+            $data = 'PHP加密解密算法';
+           $passwod = $this->encrypt($data, $this->key);
+           $dePasswod = $this->decrypt($passwod, $this->key);
+           var_dump($passwod);
+           var_dump($dePasswod);
+           die();
         }
         var_dump('后续');
         die();
