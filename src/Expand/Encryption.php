@@ -28,14 +28,18 @@ class Encryption{
         $this->character = $character;
     }
 
+    protected function getLength($key){
+        return strlen($this->key);
+    }
+
     /**
      * 加密
      */
     public function decrypt($data){
         $key = $this->decryptMd5();
         $x = 0;
-        $data = base64_decode($data);
-        $len = strlen($data);
+        $data = $this->decryptBase64();
+        $len = $this->getLength($this->character);
         $l = strlen($key);
         $char = '';
         $str = '';
@@ -59,8 +63,8 @@ class Encryption{
     /**
      * 解密
      */
-    function encrypt($data){
-        $key = md5($key);
+    function encrypt(){
+        $key = $this->decryptMd5();
         $x = 0;
         $len = strlen($data);
         $l = strlen($key);
