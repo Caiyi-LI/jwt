@@ -1,5 +1,6 @@
 <?php
 namespace yyc;
+use yyc\Expand\Signature;
 class RestfulApiAuth{
 
     protected $origin = '';
@@ -37,12 +38,8 @@ class RestfulApiAuth{
             }
         }
         if(strtoupper($this->headers['request-method']) == 'OPTIONS'){
-            $data = 'PHP加密解密算法';
-           $passwod = $this->encrypt($data, $this->key);
-           $dePasswod = $this->decrypt($passwod, $this->key);
-           var_dump($passwod);
-           var_dump($dePasswod);
-           die();
+            $signature = new Signature();
+            $signature->singnature();die();
         }
         var_dump('后续');
         die();

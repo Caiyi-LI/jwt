@@ -1,6 +1,6 @@
 <?php
 
-namespace yyc;
+namespace yyc\Expand;
 use yyc\Exception\RestfulApiException;
 class Encryption{
 
@@ -12,20 +12,21 @@ class Encryption{
 
     protected function decryptMd5(){
         if(empty($this->character)){
-            throw new RestfulApiException('character is not set');
+            new RestfulApiException('character is not set');
         }
         return md5(md5($this->character));
     }
 
     protected function decryptBase64(){
         if(empty($this->character)){
-            throw new RestfulApiException('character is not set');
+            new RestfulApiException('character is not set');
         }
         return base64_decode(base64_decode($this->character));
     }
 
     public function setCharacter($character){
         $this->character = $character;
+        return $this;
     }
 
     protected function getLength($key){
@@ -66,7 +67,7 @@ class Encryption{
     function encrypt(){
         $key = $this->decryptMd5();
         $x = 0;
-        $len = strlen($data);
+        $len = strlen($this->character);
         $l = strlen($key);
         $char = '';
         $str = '';
@@ -78,7 +79,7 @@ class Encryption{
             $x++;
         }
         for ($i = 0; $i < $len; $i++){
-            $str .= chr(ord($data{$i}) + (ord($char{$i})) % 256);
+            $str .= chr(ord($this->character{$i}) + (ord($char{$i})) % 256);
         }
         return base64_encode($str);
     }
