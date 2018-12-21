@@ -38,7 +38,9 @@ class RestfulApiAuth{
             }
         }
         if(strtoupper($this->headers['request-method']) == 'OPTIONS'){
-            $signature = new Signature();
+            $params = [];
+            $params['host'] = $this->headers['http-host'];
+            $signature = new Signature($params);
             $signature->singnature();die();
         }
         var_dump('后续');
