@@ -29,6 +29,8 @@ class RestfulApiAuth{
        // 响应头设置
        header('Access-Control-Allow-Headers:x-requested-with,content-type');
        header('Access-Control-Allow-Headers:authorization');
+       header('authorization:authorization');
+    //    var_dump()
         foreach($_SERVER as $serverKey => $item){
             if(in_array($serverKey, $this->isAllowHeaders)){
                 $this->headers[strtolower(str_replace('_', '-', $this->trimSpace($serverKey)))] = $_SERVER[$serverKey];
@@ -43,8 +45,7 @@ class RestfulApiAuth{
             $signature = new Signature($params);
             $signature->singnature();die();
         }
-        var_dump('后续');
-        die();
+        echo '后续';
     }
 
     private function trimSpace($key){
