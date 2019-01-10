@@ -8,6 +8,7 @@ class Loader
 
     /**
      * 自动加载器
+     * @param $class
      */
     public static function autoload($class)
     {
@@ -19,17 +20,20 @@ class Loader
 
     /**
      * 解析文件路径
+     * @param $class
+     * @return string
      */
     private static function findFile($class)
     {
-        $vendor = substr($class, 0, strpos($class, '\\')); // 顶级命名空间
-        $vendorDir = self::$vendorMap[$vendor]; // 文件基目录
-        $filePath = substr($class, strlen($vendor)) . '.php'; // 文件相对路径
-        return strtr($vendorDir . $filePath, '\\', DIRECTORY_SEPARATOR); // 文件标准路径
+        $vendor = substr($class, 0, strpos($class, '\\'));
+        $vendorDir = self::$vendorMap[$vendor];
+        $filePath = substr($class, strlen($vendor)) . '.php';
+        return strtr($vendorDir . $filePath, '\\', DIRECTORY_SEPARATOR);
     }
 
     /**
      * 引入文件
+     * @param $file
      */
     private static function includeFile($file)
     {

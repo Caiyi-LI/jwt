@@ -35,8 +35,9 @@ class Encryption{
 
     /**
      * 加密
+     * @return string
      */
-    public function decrypt($data){
+    public function decrypt(){
         $key = $this->decryptMd5();
         $x = 0;
         $data = $this->decryptBase64();

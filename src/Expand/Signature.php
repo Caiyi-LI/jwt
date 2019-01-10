@@ -19,7 +19,7 @@ class Signature{
         }
     }
 
-    public function singnature()
+    public function signature()
     {
         if(empty($this->time)){
             $this->time = time();
@@ -28,18 +28,25 @@ class Signature{
             new RestfulApiException('host is empty');
         }
         $encryption = new Encryption();
-        $data = 'PHP加密解密算法';
-       $passwod = $encryption->setCharacter($data)->encrypt();
-       var_dump($passwod);
+        $header = $encryption->setCharacter($this->_header())->encrypt();
+        $payload = $encryption->setCharacter($this->_payload())->encrypt();
+        $sing = $encryption->setCharacter($this->host . $this->key)->encrypt();
+        return $header . '.' . $payload . '.' . $sing;
     }
 
     private function _header()
     {
-        $header = "{'type':'jwt','alg':'customize'}";
-        return $header;
+        $header = [
+            'type' => 'jwt',
+            'alg' => 'customize'
+        ];
+        return json_encode($header);
     }
 
     private function _payload(){
-        $payload = "{}";
+        $payload = [
+            'hots' => $this->host
+        ];
+        return json_encode($payload);
     }
 }

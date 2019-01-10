@@ -9,6 +9,8 @@ class RestfulApiAuth{
 
     protected $isAllowHeaders = ['REQUEST_METHOD', 'CONTENT_TYPE', 'REQUEST_TIME', 'SERVER_NAME', 'QUERY_STRING', 'SERVER_ADDR', 'REMOTE_ADDR', 'SERVER_PORT', 'SERVER_SIGNATURE'];
 
+    private $signature = '';
+
     public function __construct($config = []){
         if (is_array($config)) {
             foreach($config as $key => $item){
@@ -22,15 +24,6 @@ class RestfulApiAuth{
     }
 
     private function converHeader(){
-                     // 指定允许其他域名访问
-       header('Access-Control-Allow-Origin:*');
-       // 响应类型
-       header('Access-Control-Allow-Methods:OPTIONS');
-       // 响应头设置
-       header('Access-Control-Allow-Headers:x-requested-with,content-type');
-       header('Access-Control-Allow-Headers:authorization');
-       header('authorization:authorization');
-    //    var_dump()
         foreach($_SERVER as $serverKey => $item){
             if(in_array($serverKey, $this->isAllowHeaders)){
                 $this->headers[strtolower(str_replace('_', '-', $this->trimSpace($serverKey)))] = $_SERVER[$serverKey];
@@ -43,9 +36,21 @@ class RestfulApiAuth{
             $params = [];
             $params['host'] = $this->headers['http-host'];
             $signature = new Signature($params);
-            $signature->singnature();die();
+            $this->signature = $signature->signature();
+            $this->next();
         }
         echo '后续';
+    }
+
+    private function next(){
+        // 指定允许其他域名访问
+        header('Access-Control-Allow-Origin:*');
+        // 响应类型
+        header('Access-Control-Allow-Methods:OPTIONS');
+        // 响应头设置
+        header('Access-Control-Allow-Headers:x-requested-with,content-type');
+        header('Access-Control-Allow-Headers:authorization');
+        header('authorization:authorization');
     }
 
     private function trimSpace($key){
