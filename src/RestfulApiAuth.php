@@ -13,6 +13,8 @@ class RestfulApiAuth{
 
     private $isAllowCustomizeHeaders = [];
 
+    private $certificationMethods = 'OPTIONS';
+
     public function __construct($config = []){
         if (is_array($config)) {
             foreach($config as $key => $item){
@@ -34,7 +36,7 @@ class RestfulApiAuth{
                 $this->headers[strtolower(str_replace('_', '-', $this->_trimSpace($serverKey)))] = $item;
             }
         }
-        if(strtoupper($this->headers['request-method']) == 'OPTIONS'){
+        if(strtoupper($this->headers['request-method']) == $this->certificationMethods){
             $params = [];
             $params['host'] = $this->headers['http-host'];
             $signature = new Signature($params);
