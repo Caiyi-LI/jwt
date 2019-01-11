@@ -42,28 +42,42 @@ class RestfulApiAuth{
             $this->_next();
             return;
         }
-        echo '后续';
     }
 
     private function _next(){
-        $this->_allowOrigin();
-        $this->_allowMethods();
-        $this->_allowHeaders();
+        $this->_setAllowOrigin();
+        $this->_setAllowMethods();
+        $this->_setAllowHeaders();
     }
 
-    private function _allowOrigin(){
-        if(!in_array(str_replace('http://', '', $this->headers['http-origin']), $this->origin)){
-            header('HTTP/1.1 403 Forbidden');
-            return;
+    private function _setAllowOrigin(){
+        if(!$this->isAllowOrigin(str_replace('http://', '', $this->headers['http-origin']))){
+            $this->_set403Forbidden();
         }
         header('Access-Control-Allow-Origin:'. $this->headers['http-origin'] .'');
     }
 
-    private function _allowMethods(){
-        header('Access-Control-Allow-Methods:'. $this->isAllowMethods .'');
+    private function _setAllowMethods(){
+        if(!$this->isAllowMethods($this->headers['request-method'])){
+            $this->_set403Forbidden();
+        }
+        header('Access-Control-Allow-Methods:'. $this->headers['request-method'] .'');
     }
 
-    private function _allowHeaders(){
+    public function isAllowMethods($method){
+        return in_array($method, explode(',', $this->isAllowMethods)) ? true : false;
+    }
+
+    public function isAllowOrigin($origin){
+        return in_array($origin, $this->origin) ? true : false;
+    }
+
+    private function _set403Forbidden(){
+        header('HTTP/1.1 403 Forbidden');
+        return;
+    }
+
+    private function _setAllowHeaders(){
         if(is_array($this->isAllowCustomizeHeaders)){
             foreach($this->isAllowCustomizeHeaders as $headerKey => $customizeHeader){
                 header('Access-Control-Allow-Headers:'. $headerKey .'');
