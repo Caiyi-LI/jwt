@@ -5,7 +5,7 @@ restful api授权控制
 ----
 ### 1.composer 安装
 ```
-composer require yyc\jwt
+composer require caiyi-li/jwt
 ```
 
 ### 2.代码引入
