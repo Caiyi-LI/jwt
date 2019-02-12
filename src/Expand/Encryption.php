@@ -56,11 +56,11 @@ class Encryption{
     function encrypt()
     {
         $key    =    md5($this->key);
-        $x        =    0;
+        $x      =    0;
         $len    =    strlen($this->character);
-        $l        =    strlen($key);
-        $char = '';
-        $str = '';
+        $l      =    strlen($key);
+        $char   =     '';
+        $str    =     '';
         for ($i = 0; $i < $len; $i++)
         {
             if ($x == $l)

@@ -2,16 +2,15 @@
 
 namespace yyc\Expand;
 use yyc\Exception\RestfulApiException;
-use yyc\Expand\Encryption;
 class Signature{
 
-    private $key = 'IKReHJ0svHcZBuJy';
+    public $key = 'IKReHJ0svHcZBuJy';
 
-    private $time = '';
+    protected $time = '';
 
-    private $host = '';
+    protected $host = '';
 
-    private $authorization = null;
+    protected $authorization = null;
 
     public function __construct($params){
         if(is_array($params)){
@@ -36,16 +35,14 @@ class Signature{
         return $header . '.' . $payload . '.' . $sing;
     }
 
-    public function decrypt(){
+    public function solve(){
         if(empty($this->authorization)){
             throw new RestfulApiException('authorization is empty');
         }
         $this->authorization = explode('.', $this->authorization);
         $encryption = new Encryption();
-        $header = $encryption->setCharacter($this->authorization[0])->decrypt();
-        $payload = $encryption->setCharacter($this->authorization[1])->decrypt();
         $sing = $encryption->setCharacter($this->authorization[2])->decrypt();
-        var_dump($sing);die();
+        return $sing;
     }
 
     private function _header()

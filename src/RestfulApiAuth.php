@@ -36,9 +36,6 @@ class RestfulApiAuth{
                 $this->headers[strtolower(str_replace('_', '-', $this->_trimSpace($serverKey)))] = $item;
             }
         }
-        if(strtoupper($this->headers['request-method']) != $this->certificationMethods){
-            $this->_certification();
-        }
         if(strtoupper($this->headers['request-method']) == $this->certificationMethods){
             $params = [];
             $params['host'] = $this->headers['http-host'];
@@ -46,6 +43,9 @@ class RestfulApiAuth{
             $this->isAllowCustomizeHeaders['authorization'] = $signature->signature();
             $this->_next();
             return;
+        }
+        if(strtoupper($this->headers['request-method']) != $this->certificationMethods){
+            $this->_certification();
         }
     }
 
@@ -62,8 +62,12 @@ class RestfulApiAuth{
         $params = [];
         $params['authorization'] = $this->headers['http-authorization'];
         $signature = new Signature($params);
-        $signature->decrypt();
-
+        $sign = $signature->solve();
+        $host = substr($sign,0, strlen($this->headers['http-host']));
+        $key  = substr($sign, strlen($this->headers['http-host']));
+        if(!in_array($host, $this->origin) || ($key != $signature->key)){
+            $this->_set403Forbidden();
+        }
     }
 
     private function _setAllowOrigin(){
